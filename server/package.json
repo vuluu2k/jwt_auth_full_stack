@@ -4,8 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server": "nodemon --inspect index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "tsc-init": "tsconfig.json",
+    "build": "rm -rf dist && tsc",
+    "server": "nodemon --inspect dist/index.js",
+    "start": "node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "tsc -w"
   },
   "author": "",
   "license": "ISC",
@@ -17,7 +21,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "graphql": "^16.6.0",
+    "graphql": "^15.3.0",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.8.0",
     "reflect-metadata": "^0.1.13",
