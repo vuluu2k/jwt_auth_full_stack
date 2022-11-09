@@ -1,5 +1,3 @@
-import { config } from 'dotenv';
-import { DataSource } from 'typeorm';
 import express from 'express';
 import 'reflect-metadata';
 import http from 'http';
@@ -7,20 +5,9 @@ import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
 import { ApolloServerPluginDrainHttpServer, ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
 
-import { User } from './entities/User';
 import { GreetingResolver } from './resolvers/greeting';
-
-config();
-
-export const dataSource = new DataSource({
-  type: 'postgres',
-  database: 'jwt_auth_full_stack',
-  username: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  logging: true,
-  synchronize: true,
-  entities: [User],
-});
+import { UserResolver } from './resolvers/user';
+import dataSource from './config/db';
 
 const main = async () => {
   // load entities, establish db connection, sync schema, etc.
@@ -32,7 +19,7 @@ const main = async () => {
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
       validate: false,
-      resolvers: [GreetingResolver],
+      resolvers: [GreetingResolver, UserResolver],
     }),
     plugins: [
       ApolloServerPluginDrainHttpServer({ httpServer: httpServer }),
