@@ -8,6 +8,7 @@ import { ApolloServerPluginDrainHttpServer, ApolloServerPluginLandingPageGraphQL
 import { GreetingResolver } from './resolvers/greeting';
 import { UserResolver } from './resolvers/user';
 import dataSource from './config/db';
+import { Context } from './types/Context';
 
 const main = async () => {
   // load entities, establish db connection, sync schema, etc.
@@ -25,6 +26,10 @@ const main = async () => {
       ApolloServerPluginDrainHttpServer({ httpServer: httpServer }),
       ApolloServerPluginLandingPageGraphQLPlayground,
     ],
+    context: ({ req, res }): Pick<Context, 'req' | 'res'> => ({
+      req,
+      res,
+    }),
   });
 
   await apolloServer.start();

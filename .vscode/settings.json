@@ -1,5 +1,5 @@
 {
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "cSpell.words": ["clsx"]
+  "cSpell.words": ["authentization", "clsx", "middlewares"]
 }
