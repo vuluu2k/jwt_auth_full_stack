@@ -1,4 +1,4 @@
-import { Arg, Mutation, Resolver } from 'type-graphql';
+import { Arg, Mutation, Query, Resolver } from 'type-graphql';
 import * as argon2 from 'argon2';
 
 import { User } from '../entities/User';
@@ -9,6 +9,11 @@ import { createToken } from '../utils/auth';
 
 @Resolver()
 export class UserResolver {
+  @Query((_return) => [User])
+  async users(): Promise<User[]> {
+    return await User.find();
+  }
+
   @Mutation((_return) => UserMutationResponse)
   async register(
     @Arg('registerInput')
