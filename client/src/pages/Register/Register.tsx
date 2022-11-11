@@ -1,17 +1,26 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-type Props = {};
+import { useRegisterUserMutation } from 'gql/graphql';
+import config from 'config';
 
 function Register() {
+  const navigate = useNavigate();
   const [fieldRegister, setFieldRegister] = useState({ username: '', password: '' });
-
+  const [register, dataRegister] = useRegisterUserMutation();
   const { username, password } = fieldRegister;
 
-  const handleOnChangeInput = (event: any) =>
-    setFieldRegister((prev) => ({ ...prev, [event.target.name]: [event.target.value] }));
+  const handleOnChangeInput = (event: ChangeEvent<HTMLInputElement>) =>
+    setFieldRegister((prev) => ({ ...prev, [event.target.name]: event.target.value }));
+
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    await register({ variables: { registerInput: fieldRegister } });
+    navigate(config.routes.home);
+  };
 
   return (
-    <form action="">
+    <form onSubmit={onSubmit}>
       <label htmlFor="username">Username:</label>
       <input type="text" name="username" id="username" value={username} onChange={handleOnChangeInput} />
       <br />
